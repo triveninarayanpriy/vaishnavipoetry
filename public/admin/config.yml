@@ -1,13 +1,13 @@
 backend:
   name: github
-  repo: your-github-username/vaishnavipoetry  # Change this to your GitHub repo
+  repo: triveninarayanpriy/vaishnavipoetry
   branch: main
-  base_url: https://api.github.com
-  auth_endpoint: auth
+  base_url: https://vaishnavipoetry.vercel.app
+  auth_endpoint: api/auth
 
 # Only allow specific GitHub users
 publish_mode: editorial_workflow
-site_url: https://your-domain.com  # Change to your deployed URL
+site_url: https://vaishnavipoetry.vercel.app
 
 media_folder: "public/images/poems"
 public_folder: "/images/poems"

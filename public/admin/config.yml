@@ -1,0 +1,56 @@
+backend:
+  name: github
+  repo: your-github-username/vaishnavipoetry  # Change this to your GitHub repo
+  branch: main
+  base_url: https://api.github.com
+  auth_endpoint: auth
+
+# Only allow specific GitHub users
+publish_mode: editorial_workflow
+site_url: https://your-domain.com  # Change to your deployed URL
+
+media_folder: "public/images/poems"
+public_folder: "/images/poems"
+
+collections:
+  - name: "poems"
+    label: "Poems"
+    folder: "content/poems"
+    create: true
+    slug: "{{slug}}"
+    editor:
+      preview: true
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Category", name: "category", widget: "string", default: "Poetry" }
+      - { label: "Excerpt", name: "excerpt", widget: "text", hint: "First line or short excerpt for preview" }
+      - { 
+          label: "Theme", 
+          name: "theme", 
+          widget: "select", 
+          options: ["Light", "Dark", "Vintage"],
+          default: "Light",
+          hint: "Visual theme for the poem page"
+        }
+      - { 
+          label: "Featured Image", 
+          name: "featuredImage", 
+          widget: "image", 
+          required: false,
+          hint: "Optional background or featured image"
+        }
+      - { 
+          label: "Background Style", 
+          name: "background", 
+          widget: "string",
+          required: false,
+          default: "bg-gradient-to-br from-cream via-parchment to-sage/10",
+          hint: "Tailwind CSS gradient classes"
+        }
+      - { 
+          label: "Body", 
+          name: "body", 
+          widget: "markdown",
+          hint: "Full poem content - preserve line breaks and stanzas"
+        }

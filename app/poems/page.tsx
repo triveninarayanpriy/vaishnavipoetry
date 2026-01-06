@@ -1,5 +1,5 @@
 import { getAllPoems } from '@/lib/api';
-import PoemsPageContent from './PoemsPageContent';
+import PoemsPageContent from '@/components/PoemsPageContent';
 
 export const metadata = {
   title: 'Poetry Collection | Vaishnavi Poetry',

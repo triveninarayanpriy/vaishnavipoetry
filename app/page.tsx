@@ -2,8 +2,27 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+interface SiteConfig {
+  home: {
+    title: string;
+    greeting: string;
+    poemQuote: string;
+    ctaText: string;
+  };
+}
 
 export default function Home() {
+  const [config, setConfig] = useState<SiteConfig | null>(null);
+
+  useEffect(() => {
+    fetch('/data/siteConfig.json')
+      .then(res => res.json())
+      .then(data => setConfig(data))
+      .catch(err => console.error('Failed to load config:', err));
+  }, []);
+
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
     animate: { opacity: 1, y: 0 },
@@ -17,6 +36,8 @@ export default function Home() {
       }
     }
   };
+
+  if (!config) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream via-parchment to-moss/10 relative overflow-hidden">
@@ -41,7 +62,7 @@ export default function Home() {
             className="space-y-6"
           >
             <motion.blockquote 
-              className="font-serif text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-earth leading-tight px-4"
+              className="font-serif text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-earth leading-tight px-4 whitespace-pre-line"
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 1, 1, 0.7] }}
               transition={{ 
@@ -51,22 +72,8 @@ export default function Home() {
                 repeatDelay: 2
               }}
             >
-              <span className="block italic">
-                "In whispered winds
-              </span>
-              <span className="block italic mt-4">
-                the earth remembers"
-              </span>
+              {config.home.poemQuote}
             </motion.blockquote>
-            
-            <motion.p 
-              className="font-sans text-soil text-lg md:text-xl"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5, duration: 1 }}
-            >
-              — from "Echoes of Autumn"
-            </motion.p>
           </motion.div>
 
           {/* Intro Text */}
@@ -74,12 +81,11 @@ export default function Home() {
             variants={fadeInUp}
             className="max-w-2xl mx-auto space-y-6"
           >
-            <h1 className="font-serif text-xl sm:text-2xl md:text-3xl text-earth px-4">
-              Poetry Portfolio
+            <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl text-earth px-4">
+              {config.home.title}
             </h1>
-            <p className="font-sans text-sm sm:text-base md:text-lg text-soil leading-relaxed px-4">
-              A curated collection exploring the intersections of nature, memory, 
-              and the quiet moments that shape our human experience.
+            <p className="font-sans text-base sm:text-lg md:text-xl text-soil px-4">
+              {config.home.greeting}
             </p>
           </motion.div>
 
@@ -94,7 +100,7 @@ export default function Home() {
                 whileTap={{ scale: 0.98 }}
                 className="px-8 py-4 bg-clay hover:bg-clay-dark text-cream font-sans font-medium rounded-full shadow-lg transition-all duration-300"
               >
-                Explore Poems
+                {config.home.ctaText}
               </motion.button>
             </Link>
             
@@ -104,7 +110,7 @@ export default function Home() {
                 whileTap={{ scale: 0.98 }}
                 className="px-8 py-4 bg-transparent border-2 border-soil hover:border-earth text-soil hover:text-earth font-sans font-medium rounded-full transition-all duration-300"
               >
-                About Me
+                About
               </motion.button>
             </Link>
           </motion.div>

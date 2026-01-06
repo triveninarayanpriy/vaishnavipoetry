@@ -42,12 +42,13 @@ export default function PoemContent({ poem }: PoemContentProps) {
 
       {/* Parallax Cover */}
       {poem.featuredImage && (
-        <motion.div style={{ y: parallaxY }} className="relative w-full h-56 sm:h-72 md:h-96 overflow-hidden">
-          <div
-            className="absolute inset-0 bg-center bg-cover"
-            style={{ backgroundImage: `url(${poem.featuredImage})` }}
+        <motion.div style={{ y: parallaxY }} className="relative w-full h-64 sm:h-80 md:h-96 overflow-hidden rounded-b-2xl shadow-lg">
+          <img
+            src={poem.featuredImage}
+            alt={poem.title}
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-cream/20 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-cream/40" />
         </motion.div>
       )}
 

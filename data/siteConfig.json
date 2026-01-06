@@ -1,0 +1,22 @@
+{
+  "siteName": "Vaishnavi Poetry",
+  "siteUrl": "https://www.vaishnavipoetry.me",
+  "about": {
+    "title": "About",
+    "writerName": "Vaishnavi",
+    "writerPhotoUrl": "https://via.placeholder.com/300?text=Writer+Photo",
+    "bioIntro": "Welcome to my poetry portfolio—a quiet space where words meet the natural world, and observations transform into verse.",
+    "bioMain": [
+      "Each poem here is an attempt to capture the ephemeral: the way light filters through autumn leaves, the silence between stars, the persistent flow of a river that knows more than we ever will.",
+      "This collection explores themes of nature, memory, and the human condition through a lens of contemplation and wonder. Poetry, for me, is both a practice of attention and an act of reverence."
+    ],
+    "quote": "We write to taste life twice, in the moment and in retrospect.",
+    "quoteAuthor": "Anaïs Nin"
+  },
+  "home": {
+    "title": "Vaishnavi",
+    "greeting": "Where words meet the natural world.",
+    "poemQuote": "The river carries ancient songs\nOf mountain springs and rights and wrongs,\nIt winds through valleys, deep and wide,\nA liquid path, a flowing guide.",
+    "ctaText": "Explore the Collection"
+  }
+}

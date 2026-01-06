@@ -2,12 +2,12 @@ backend:
   name: github
   repo: triveninarayanpriy/vaishnavipoetry
   branch: main
-  base_url: https://vaishnavipoetry.vercel.app
+  base_url: https://www.vaishnavipoetry.me
   auth_endpoint: api/auth
 
 # Only allow specific GitHub users
 publish_mode: editorial_workflow
-site_url: https://vaishnavipoetry.vercel.app
+site_url: https://www.vaishnavipoetry.me
 
 media_folder: "public/images/poems"
 public_folder: "/images/poems"

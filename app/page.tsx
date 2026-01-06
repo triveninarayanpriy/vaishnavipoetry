@@ -4,23 +4,21 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-interface SiteConfig {
-  home: {
-    title: string;
-    greeting: string;
-    poemQuote: string;
-    ctaText: string;
-  };
+interface HomepageData {
+  heroTitle: string;
+  heroSubtitle: string;
+  featuredQuote: string;
+  ctaText: string;
 }
 
 export default function Home() {
-  const [config, setConfig] = useState<SiteConfig | null>(null);
+  const [homepage, setHomepage] = useState<HomepageData | null>(null);
 
   useEffect(() => {
-    fetch('/data/siteConfig.json')
+    fetch('/api/homepage')
       .then(res => res.json())
-      .then(data => setConfig(data))
-      .catch(err => console.error('Failed to load config:', err));
+      .then(data => setHomepage(data))
+      .catch(err => console.error('Failed to load homepage:', err));
   }, []);
 
   const fadeInUp = {
@@ -37,7 +35,16 @@ export default function Home() {
     }
   };
 
-  if (!config) return null;
+  if (!homepage) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-cream">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-clay mx-auto mb-4"></div>
+          <p className="text-soil">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream via-parchment to-moss/10 relative overflow-hidden">
@@ -72,7 +79,7 @@ export default function Home() {
                 repeatDelay: 2
               }}
             >
-              {config.home.poemQuote}
+              {homepage.featuredQuote}
             </motion.blockquote>
           </motion.div>
 
@@ -82,10 +89,10 @@ export default function Home() {
             className="max-w-2xl mx-auto space-y-6"
           >
             <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl text-earth px-4">
-              {config.home.title}
+              {homepage.heroTitle}
             </h1>
             <p className="font-sans text-base sm:text-lg md:text-xl text-soil px-4">
-              {config.home.greeting}
+              {homepage.heroSubtitle}
             </p>
           </motion.div>
 
@@ -100,7 +107,7 @@ export default function Home() {
                 whileTap={{ scale: 0.98 }}
                 className="px-8 py-4 bg-clay hover:bg-clay-dark text-cream font-sans font-medium rounded-full shadow-lg transition-all duration-300"
               >
-                {config.home.ctaText}
+                {homepage.ctaText}
               </motion.button>
             </Link>
             

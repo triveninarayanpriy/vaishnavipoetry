@@ -9,8 +9,8 @@ backend:
 publish_mode: editorial_workflow
 site_url: https://www.vaishnavipoetry.me
 
-media_folder: "public/images/poems"
-public_folder: "/images/poems"
+media_folder: "public/images"
+public_folder: "/images"
 
 collections:
   - name: "poems"
@@ -38,7 +38,7 @@ collections:
           name: "featuredImage", 
           widget: "image", 
           required: false,
-          hint: "Optional background or featured image"
+          hint: "Cover photo for the poem"
         }
       - { 
           label: "Background Style", 
@@ -54,3 +54,38 @@ collections:
           widget: "markdown",
           hint: "Full poem content - preserve line breaks and stanzas"
         }
+
+  - name: "about"
+    label: "About Page"
+    files:
+      - name: "about"
+        label: "About"
+        file: "content/about.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string", default: "About" }
+          - { 
+              label: "Writer Photo", 
+              name: "writerPhoto", 
+              widget: "image",
+              hint: "Circular profile photo of the writer"
+            }
+          - { label: "Writer Name", name: "writerName", widget: "string" }
+          - { label: "Tagline", name: "tagline", widget: "string", hint: "Short subtitle (e.g., 'Poet & Observer')" }
+          - { 
+              label: "Bio", 
+              name: "body", 
+              widget: "markdown",
+              hint: "Full biography and story"
+            }
+
+  - name: "homepage"
+    label: "Homepage"
+    files:
+      - name: "homepage"
+        label: "Homepage"
+        file: "content/homepage.md"
+        fields:
+          - { label: "Hero Title", name: "heroTitle", widget: "string", default: "Vaishnavi" }
+          - { label: "Hero Subtitle", name: "heroSubtitle", widget: "string", hint: "Short greeting or tagline" }
+          - { label: "Featured Poem Quote", name: "featuredQuote", widget: "text", hint: "Multi-line poem excerpt to display on home" }
+          - { label: "CTA Button Text", name: "ctaText", widget: "string", default: "Explore the Collection" }

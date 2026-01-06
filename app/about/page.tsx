@@ -3,26 +3,39 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { getAbout } from '@/lib/api';
 
-interface SiteConfig {
-  about: {
-    writerName: string;
-    writerPhotoUrl: string;
-    bioIntro: string;
-    bioMain: string[];
-    quote: string;
-    quoteAuthor: string;
-  };
+interface AboutData {
+  title: string;
+  writerPhoto: string;
+  writerName: string;
+  tagline: string;
+  content: string;
 }
 
 export default function AboutPage() {
-  const [config, setConfig] = useState<SiteConfig | null>(null);
+  const [about, setAbout] = useState<AboutData | null>(null);
+  const [html, setHtml] = useState<string>('');
 
   useEffect(() => {
-    fetch('/data/siteConfig.json')
+    // Fetch the about markdown content and parse basic markdown
+    fetch('/api/about')
       .then(res => res.json())
-      .then(data => setConfig(data))
-      .catch(err => console.error('Failed to load config:', err));
+      .then(data => {
+        setAbout(data);
+        // Simple markdown to HTML conversion for paragraphs
+        const processed = data.content
+          .split('\n\n')
+          .map((para: string) => {
+            if (para.startsWith('>')) {
+              return `<blockquote class="italic text-soil border-l-4 border-clay pl-4 my-4">${para.replace(/^> /, '')}</blockquote>`;
+            }
+            return `<p class="leading-relaxed">${para}</p>`;
+          })
+          .join('');
+        setHtml(processed);
+      })
+      .catch(err => console.error('Failed to load about:', err));
   }, []);
 
   const fadeInUp = {
@@ -31,7 +44,16 @@ export default function AboutPage() {
     transition: { duration: 0.8 }
   };
 
-  if (!config) return null;
+  if (!about) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-sage/20">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-clay mx-auto mb-4"></div>
+          <p className="text-soil">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sage/20 via-cream to-parchment">
@@ -48,10 +70,10 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="flex justify-center mb-12"
           >
-            <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-clay/30 shadow-lg">
+            <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-clay/40 shadow-lg">
               <img
-                src={config.about.writerPhotoUrl}
-                alt={config.about.writerName}
+                src={about.writerPhoto}
+                alt={about.writerName}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -61,43 +83,21 @@ export default function AboutPage() {
             variants={fadeInUp}
             className="font-serif text-4xl md:text-5xl text-earth mb-2 text-center"
           >
-            {config.about.writerName}
+            {about.writerName}
           </motion.h1>
 
           <motion.p
             variants={fadeInUp}
             className="text-center text-soil mb-8 font-sans text-lg"
           >
-            Poet & Observer of Life
+            {about.tagline}
           </motion.p>
 
           <motion.div
             variants={fadeInUp}
-            className="space-y-6 font-sans text-base sm:text-lg text-charcoal/80 leading-relaxed"
-          >
-            <p>
-              {config.about.bioIntro}
-            </p>
-
-            {config.about.bioMain.map((paragraph, idx) => (
-              <p key={idx}>
-                {paragraph}
-              </p>
-            ))}
-
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-              className="h-px bg-clay/40 my-8"
-            />
-
-            <p className="italic text-soil text-center">
-              "{config.about.quote}"
-              <br />
-              <span className="text-sm not-italic">— {config.about.quoteAuthor}</span>
-            </p>
-          </motion.div>
+            className="space-y-6 font-sans text-base sm:text-lg text-charcoal/80 leading-relaxed prose prose-sm max-w-none"
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -120,3 +120,5 @@ export default function AboutPage() {
     </div>
   );
 }
+
+

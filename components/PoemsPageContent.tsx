@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Poem } from '@/lib/poems';
+import { Poem } from '@/lib/api';
 
 interface PoemsPageContentProps {
   poems: Poem[];

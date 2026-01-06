@@ -17,9 +17,29 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Poetry Portfolio | Vaishnavi",
-  description: "A curated collection of poetry exploring nature, emotion, and the human experience",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
+  title: "Vaishnavi Poetry | A Collection of Nature & Wonder",
+  description: "Explore poetry celebrating nature, memory, and the human condition through thoughtful verse and observation.",
+  keywords: ["poetry", "nature poetry", "original poetry", "literature", "creative writing"],
+  authors: [{ name: "Vaishnavi" }],
+  creator: "Vaishnavi",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://vaishnavipoetry.me",
+    siteName: "Vaishnavi Poetry",
+    title: "Vaishnavi Poetry | A Collection of Nature & Wonder",
+    description: "Explore poetry celebrating nature, memory, and the human condition.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
+  },
+  alternates: {
+    canonical: "https://vaishnavipoetry.me",
+  },
 };
 
 export default function RootLayout({

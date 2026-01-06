@@ -12,8 +12,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const poem = getPoemBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const poem = getPoemBySlug(slug);
   
   if (!poem) {
     return {
@@ -27,8 +28,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default function PoemPage({ params }: { params: { slug: string } }) {
-  const poem = getPoemBySlug(params.slug);
+export default async function PoemPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const poem = getPoemBySlug(slug);
   
   if (!poem) {
     notFound();

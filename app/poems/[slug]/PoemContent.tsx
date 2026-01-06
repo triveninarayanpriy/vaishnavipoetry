@@ -1,34 +1,14 @@
-import { getAllPoems, getPoemBySlug, Poem } from '@/lib/poems';
-import { notFound } from 'next/navigation';
-import PoemContent from './PoemContent';
+'use client';
 
-export async function generateStaticParams() {
-  const poems = getAllPoems();
-  return poems.map((poem) => ({
-    slug: poem.slug,
-  }));
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { Poem } from '@/lib/poems';
+
+interface PoemContentProps {
+  poem: Poem;
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const poem = getPoemBySlug(params.slug);
-  
-  if (!poem) {
-    return {
-      title: 'Poem Not Found',
-    };
-  }
-
-  return {
-    title: `${poem.title} | Vaishnavi Poetry`,
-    description: poem.excerpt || poem.content.substring(0, 155),
-  };
-}
-
-function PoemPageContent({ poem }: PoemPageContentProps) {
-  if (!poem) {
-    notFound();
-  }
-
+export default function PoemContent({ poem }: PoemContentProps) {
   return (
     <div className={`min-h-screen ${poem.background || 'bg-gradient-to-br from-cream via-parchment to-sage/10'}`}>
       {/* Paper Texture */}
@@ -39,18 +19,18 @@ function PoemPageContent({ poem }: PoemPageContentProps) {
         }}
       />
 
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
         {/* Back Button */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-8"
+          className="mb-6 sm:mb-8"
         >
           <Link href="/poems">
             <motion.span
               whileHover={{ x: -5 }}
-              className="font-sans text-soil hover:text-earth transition-colors inline-flex items-center gap-2"
+              className="font-sans text-sm sm:text-base text-soil hover:text-earth transition-colors inline-flex items-center gap-2"
             >
               ← Back to Poems
             </motion.span>
@@ -62,7 +42,7 @@ function PoemPageContent({ poem }: PoemPageContentProps) {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="bg-cream/80 backdrop-blur-sm rounded-lg shadow-2xl p-8 md:p-16 border border-clay/30"
+          className="bg-cream/90 backdrop-blur-sm rounded-lg shadow-2xl p-6 sm:p-8 md:p-16 border border-clay/30"
           style={{
             boxShadow: '0 20px 60px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5)',
           }}
@@ -73,7 +53,7 @@ function PoemPageContent({ poem }: PoemPageContentProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="inline-block font-sans text-xs uppercase tracking-widest text-soil/70 mb-6"
+              className="inline-block font-sans text-xs uppercase tracking-widest text-soil/70 mb-4 sm:mb-6"
             >
               {poem.category}
             </motion.span>
@@ -84,7 +64,7 @@ function PoemPageContent({ poem }: PoemPageContentProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="font-serif text-4xl md:text-6xl text-earth mb-8 leading-tight"
+            className="font-serif text-3xl sm:text-4xl md:text-6xl text-earth mb-6 sm:mb-8 leading-tight"
           >
             {poem.title}
           </motion.h1>
@@ -94,7 +74,7 @@ function PoemPageContent({ poem }: PoemPageContentProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="block font-sans text-sm text-soil/60 mb-12"
+            className="block font-sans text-xs sm:text-sm text-soil/60 mb-8 sm:mb-12"
           >
             {new Date(poem.date).toLocaleDateString('en-US', {
               year: 'numeric',
@@ -108,7 +88,7 @@ function PoemPageContent({ poem }: PoemPageContentProps) {
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="h-px bg-clay/40 mb-12"
+            className="h-px bg-clay/40 mb-8 sm:mb-12"
           />
 
           {/* Poem Content */}
@@ -116,7 +96,7 @@ function PoemPageContent({ poem }: PoemPageContentProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 1 }}
-            className="font-serif text-xl md:text-2xl text-charcoal leading-loose whitespace-pre-line"
+            className="font-serif text-lg sm:text-xl md:text-2xl text-charcoal leading-relaxed sm:leading-loose whitespace-pre-line"
           >
             {poem.content}
           </motion.div>
@@ -126,7 +106,7 @@ function PoemPageContent({ poem }: PoemPageContentProps) {
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ delay: 1, duration: 0.8 }}
-            className="h-px bg-clay/40 mt-12 mb-8"
+            className="h-px bg-clay/40 mt-8 sm:mt-12 mb-6 sm:mb-8"
           />
 
           {/* Interaction Placeholders */}
@@ -134,17 +114,17 @@ function PoemPageContent({ poem }: PoemPageContentProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
-            className="flex items-center gap-6 text-sm text-soil/60"
+            className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 text-xs sm:text-sm text-soil/60"
           >
             <button className="flex items-center gap-2 hover:text-clay-dark transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
               <span className="font-sans">Hearts (Coming Soon)</span>
             </button>
             
             <button className="flex items-center gap-2 hover:text-clay-dark transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
               <span className="font-sans">Comments (Coming Soon)</span>
@@ -157,12 +137,12 @@ function PoemPageContent({ poem }: PoemPageContentProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.4 }}
-          className="mt-12 flex justify-between items-center"
+          className="mt-8 sm:mt-12 flex justify-center"
         >
           <Link href="/poems">
             <motion.button
               whileHover={{ scale: 1.05, x: -5 }}
-              className="px-6 py-3 bg-clay/80 hover:bg-clay text-cream font-sans rounded-full transition-all"
+              className="px-6 py-3 bg-clay hover:bg-clay-dark text-cream font-sans rounded-full transition-all shadow-lg text-sm sm:text-base"
             >
               View All Poems
             </motion.button>
@@ -171,15 +151,4 @@ function PoemPageContent({ poem }: PoemPageContentProps) {
       </div>
     </div>
   );
-}
-
-
-export default async function PoemPage({ params }: { params: { slug: string } }) {
-  const poem = getPoemBySlug(params.slug);
-  
-  if (!poem) {
-    notFound();
-  }
-
-  return <PoemContent poem={poem} />;
 }

@@ -19,6 +19,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Poetry Portfolio | Vaishnavi",
   description: "A curated collection of poetry exploring nature, emotion, and the human experience",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
 };
 
 export default function RootLayout({

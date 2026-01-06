@@ -19,10 +19,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream via-parchment to-sage/20 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-cream via-parchment to-moss/10 relative overflow-hidden">
       {/* Paper Texture Overlay */}
       <div 
-        className="absolute inset-0 opacity-30 pointer-events-none"
+        className="absolute inset-0 opacity-20 pointer-events-none"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E")`,
         }}
@@ -41,7 +41,7 @@ export default function Home() {
             className="space-y-6"
           >
             <motion.blockquote 
-              className="font-serif text-4xl md:text-6xl lg:text-7xl text-earth leading-tight"
+              className="font-serif text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-earth leading-tight px-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 1, 1, 0.7] }}
               transition={{ 
@@ -74,10 +74,10 @@ export default function Home() {
             variants={fadeInUp}
             className="max-w-2xl mx-auto space-y-6"
           >
-            <h1 className="font-serif text-2xl md:text-3xl text-charcoal">
+            <h1 className="font-serif text-xl sm:text-2xl md:text-3xl text-earth px-4">
               Poetry Portfolio
             </h1>
-            <p className="font-sans text-base md:text-lg text-earth/80 leading-relaxed">
+            <p className="font-sans text-sm sm:text-base md:text-lg text-soil leading-relaxed px-4">
               A curated collection exploring the intersections of nature, memory, 
               and the quiet moments that shape our human experience.
             </p>

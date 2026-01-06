@@ -1,12 +1,12 @@
 ---
-title: "Echoes of Autumn"
+title: Echoes of Triveni
 date: 2026-01-05T00:00:00.000Z
-category: "Nature"
-excerpt: "In whispered winds the earth remembers..."
-theme: "Light"
-background: "bg-gradient-to-br from-clay/20 via-sage/30 to-soil/20"
+category: Nature
+excerpt: In whispered winds the earth remembers...
+theme: Vintage
+featuredImage: /images/poems/Copilot_20251210_113928-removebg-preview.png
+background: bg-gradient-to-br from-clay/20 via-sage/30 to-soil/20
 ---
-
 In whispered winds the earth remembers
 The touch of leaves now turned to ember,
 Each falling leaf a gentle note
@@ -20,4 +20,4 @@ Yet knowing spring will come anon.
 Beneath the soil, the seeds await
 Their season's turn, their destined date,
 For nothing truly dies, you see—
-It merely waits in memory.
+It merely waits in memory.- Triveni

@@ -63,39 +63,54 @@ export default function AboutPage() {
           animate="animate"
           className="bg-cream/80 backdrop-blur-2xl rounded-2xl shadow-2xl p-8 md:p-16 border border-clay/30"
         >
-          {/* Writer Circle Photo */}
+          {/* Writer Circle Photo - Perfect Circle with Soft Border */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
             className="flex justify-center mb-12"
           >
-            <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-clay/40 shadow-lg">
-              <img
-                src={about.writerPhoto}
-                alt={about.writerName}
-                className="w-full h-full object-cover"
-              />
+            <div className="relative w-56 h-56 md:w-64 md:h-64">
+              {/* Outer glow ring */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-clay/30 to-sage/20 blur-2xl" />
+              {/* Inner circle photo */}
+              <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-clay shadow-2xl">
+                <img
+                  src={about.writerPhoto}
+                  alt={about.writerName}
+                  className="w-full h-full object-cover"
+                />
+                {/* Soft overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+              </div>
             </div>
           </motion.div>
 
           <motion.h1
             variants={fadeInUp}
-            className="font-serif text-4xl md:text-5xl text-earth mb-2 text-center"
+            className="font-serif text-5xl md:text-6xl text-earth mb-3 text-center tracking-tight"
           >
             {about.writerName}
           </motion.h1>
 
           <motion.p
             variants={fadeInUp}
-            className="text-center text-soil mb-8 font-sans text-lg"
+            className="text-center text-clay font-sans text-lg md:text-xl font-medium mb-10 tracking-wide uppercase"
           >
             {about.tagline}
           </motion.p>
 
+          {/* Decorative divider */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="h-px bg-clay/30 mb-10 w-16 mx-auto"
+          />
+
           <motion.div
             variants={fadeInUp}
-            className="space-y-6 font-sans text-base sm:text-lg text-charcoal/80 leading-relaxed prose prose-sm max-w-none"
+            className="space-y-6 font-sans text-base md:text-lg text-charcoal/80 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: html }}
           />
 

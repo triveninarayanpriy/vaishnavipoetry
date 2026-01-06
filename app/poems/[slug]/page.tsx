@@ -2,6 +2,9 @@ import { getPoemBySlug, getPoemSlugs } from '@/lib/api';
 import { notFound } from 'next/navigation';
 import PoemContent from './PoemContent';
 
+// Enable dynamic route segments for any poems added via CMS
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   const slugs = getPoemSlugs();
   return slugs.map((slug) => ({

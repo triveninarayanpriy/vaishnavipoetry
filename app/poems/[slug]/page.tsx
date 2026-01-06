@@ -1,6 +1,6 @@
 import { getAllPoems, getPoemBySlug } from '@/lib/poems';
 import { notFound } from 'next/navigation';
-import PoemContent from './PoemContent';
+import PoemContent from '@/app/poems/[slug]/PoemContent';
 
 export async function generateStaticParams() {
   const poems = getAllPoems();

@@ -1,6 +1,11 @@
 ---
-heroTitle: Vaishnavi
+heroTitle: KUSUM
 heroSubtitle: Where words meet the natural world.
-featuredQuote: "The river carries ancient songs\nOf mountain springs and rights and wrongs,\nIt winds through valleys, deep and wide,\nA liquid path, a flowing guide."
+featuredQuote: |-
+  The river carries ancient songs
+  Of mountain springs and rights and wrongs,
+  It winds through valleys, deep and wide,
+  A liquid path, a flowing guide.
 ctaText: Explore the Collection
 ---
+

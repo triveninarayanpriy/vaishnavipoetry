@@ -13,10 +13,18 @@ type SearchParams = {
 };
 
 function getUniqueCategories(poems: ReturnType<typeof getAllPoems>): string[] {
-  const categories = poems
-    .map(poem => poem.category)
-    .filter((cat): cat is string => Boolean(cat));
-  return Array.from(new Set(categories)).sort((a, b) => a.localeCompare(b));
+  const map = new Map<string, string>();
+  poems.forEach(poem => {
+    const raw = (poem.category || '').trim();
+    if (!raw) return;
+    const key = raw.toLowerCase();
+    if (!map.has(key)) map.set(key, raw);
+  });
+  return Array.from(map.values()).sort((a, b) => a.localeCompare(b));
+}
+
+function normalizeCategory(value?: string | null) {
+  return (value || '').trim().toLowerCase();
 }
 
 export default function PoemsPage({ searchParams }: { searchParams?: SearchParams }) {
@@ -25,9 +33,10 @@ export default function PoemsPage({ searchParams }: { searchParams?: SearchParam
 
   const rawCategory = searchParams?.category;
   const activeCategory = Array.isArray(rawCategory) ? rawCategory[0] : rawCategory;
+  const activeKey = normalizeCategory(activeCategory);
 
-  const filteredPoems = activeCategory
-    ? poems.filter(poem => (poem.category || '').toLowerCase() === activeCategory.toLowerCase())
+  const filteredPoems = activeKey
+    ? poems.filter(poem => normalizeCategory(poem.category) === activeKey)
     : poems;
 
   return (

@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Merriweather, Inter } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
-import PageTransition from "@/components/PageTransition";
-import Footer from "@/components/Footer";
+import Layout from "@/components/Layout";
 import { getChromeSettings } from "@/lib/site";
 
 const playfair = Playfair_Display({
@@ -63,12 +61,15 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${merriweather.variable} ${inter.variable} antialiased bg-paper text-ink`}
       >
-        <div className="paper-grid" aria-hidden />
-        <Navigation logoText={chrome.logoText} navItems={chrome.nav} />
-        <PageTransition>
-          <main className="pt-10 pb-16">{children}</main>
-        </PageTransition>
-        <Footer footerText={chrome.footerText} footerCopyright={chrome.footerCopyright} />
+        <Layout
+          siteName={chrome.siteName}
+          logoText={chrome.logoText}
+          nav={chrome.nav}
+          footerText={chrome.footerText}
+          footerCopyright={chrome.footerCopyright}
+        >
+          {children}
+        </Layout>
       </body>
     </html>
   );

@@ -10,8 +10,9 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const poem = getPoemBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const poem = getPoemBySlug(slug);
   if (!poem) return { title: 'Poem Not Found' };
   return {
     title: `${poem.title} | The Tactile Verse`,
@@ -19,85 +20,103 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default function PoemPage({ params }: { params: { slug: string } }) {
-  const poem = getPoemBySlug(params.slug);
+export default async function PoemPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const poem = getPoemBySlug(slug);
   if (!poem) notFound();
 
   const author = getAbout();
   const lines = poem.content.split('\n');
 
-  const background = poem.featuredImage
-    ? `linear-gradient(140deg, rgba(253,251,247,0.92) 15%, rgba(45,58,47,0.72) 120%), url(${poem.featuredImage})`
-    : 'radial-gradient(circle at 20% 20%, rgba(180,83,9,0.12), transparent 35%), radial-gradient(circle at 80% 0%, rgba(45,58,47,0.18), transparent 35%), linear-gradient(135deg, #fdfbf7 0%, #f3ecde 60%, #e5dcc7 100%)';
-
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-fixed"
-        style={{ backgroundImage: background }}
-        aria-hidden
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-paper/70 via-paper/85 to-paper" aria-hidden />
+    <section className="min-h-screen relative">
+      {/* Parallax Cover Background */}
+      {poem.featuredImage && (
+        <div
+          className="fixed inset-0 bg-cover bg-center bg-fixed opacity-20"
+          style={{ backgroundImage: `url(${poem.featuredImage})` }}
+          aria-hidden
+        />
+      )}
 
-      <div className="relative z-10 max-w-3xl mx-auto px-6 pt-24 pb-24">
-        <div className="glass-panel rounded-[28px] border border-ink/10 overflow-hidden">
-          <div className="relative h-40 overflow-hidden">
-            <div
-              className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(180,83,9,0.25),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(45,58,47,0.25),transparent_32%),linear-gradient(120deg,rgba(31,32,31,0.85),rgba(31,32,31,0.65))]"
-            />
-            <div className="absolute inset-0 flex items-end justify-between px-6 pb-6 text-paper">
+      {/* Gradient Overlay */}
+      <div className="fixed inset-0 bg-gradient-to-b from-paper/60 via-paper/90 to-paper" aria-hidden />
+
+      {/* Content */}
+      <div className="relative z-10 container-prose py-16 md:py-24">
+        {/* Back Link */}
+        <Link
+          href="/poems"
+          className="inline-flex items-center gap-2 text-sm text-pine/50 hover:text-burnt transition-colors mb-8"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to collection
+        </Link>
+
+        {/* Main Glass Card */}
+        <article className="glass-card overflow-hidden">
+          {/* Header Section */}
+          <div className="relative px-6 py-8 md:px-10 md:py-12 border-b border-pine/8 bg-gradient-to-br from-pine/5 to-transparent">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
               <div>
-                <p className="text-xs uppercase tracking-[0.3em] text-paper/70">{poem.category || 'Poem'}</p>
-                <h1 className="font-serif text-3xl md:text-4xl leading-tight drop-shadow-md">{poem.title}</h1>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-burnt mb-2">
+                  {poem.category || 'Poem'}
+                </p>
+                <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-pine font-semibold leading-tight">
+                  {poem.title}
+                </h1>
               </div>
-              <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.18em] text-paper/70">
-                <span className="h-px w-8 bg-paper/40" aria-hidden />
+              <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-pine/50">
+                <span className="h-px w-6 bg-pine/20" />
                 {new Date(poem.date).toLocaleDateString('en-US', {
                   year: 'numeric',
-                  month: 'short',
+                  month: 'long',
                   day: 'numeric',
                 })}
               </div>
             </div>
+            {poem.excerpt && (
+              <p className="mt-4 text-sm text-pine/60 italic max-w-xl">{poem.excerpt}</p>
+            )}
           </div>
 
-          <div className="p-8 md:p-10">
-            {poem.excerpt && (
-              <p className="mb-6 font-sans text-sm uppercase tracking-[0.24em] text-ink/50">{poem.excerpt}</p>
-            )}
-
-            <div className="poem-body space-y-3 text-[17px] leading-[1.65] text-ink/90">
+          {/* Poem Body - Dense Line Height */}
+          <div className="px-6 py-8 md:px-10 md:py-12">
+            <div className="poem-text">
               {lines.map((line, idx) => (
-                <p key={idx} className="leading-[1.65]">
+                <p key={idx} className="leading-snug">
                   {line || '\u00A0'}
                 </p>
               ))}
             </div>
+          </div>
 
-            <div className="mt-10 flex flex-col gap-4 border-t border-ink/8 pt-6 md:flex-row md:items-center md:justify-between">
-              <div className="flex items-center gap-3 text-sm text-ink/70">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-ink/5 text-ink font-serif text-base">{author.writerName.slice(0, 1)}</span>
+          {/* Author Signature Section */}
+          <div className="px-6 py-6 md:px-10 md:py-8 border-t border-pine/8 bg-pine/[0.02]">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-burnt to-burnt-hover flex items-center justify-center text-paper font-serif text-lg font-semibold shadow-md author-initial">
+                  {author.writerName.charAt(0)}
+                </div>
                 <div>
-                  <p className="font-serif text-base text-ink">{author.writerName}</p>
-                  <p className="text-xs uppercase tracking-[0.2em] text-ink/50">{author.tagline}</p>
+                  <p className="font-serif text-lg text-pine">{author.writerName}</p>
+                  <p className="text-xs uppercase tracking-[0.2em] text-pine/50">{author.tagline}</p>
                 </div>
               </div>
-              <Link
-                href="/poems"
-                className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-ink/5 px-4 py-2 text-sm font-medium text-ink hover:border-burnt/30 hover:bg-paper transition"
-              >
-                ← Back to collection
-              </Link>
-            </div>
 
-            {author.signature && (
-              <div className="mt-8 flex justify-end text-ink/60">
-                <div className="text-sm" dangerouslySetInnerHTML={{ __html: author.signature }} />
-              </div>
-            )}
+              {/* Signature with Breathing Animation */}
+              {author.signature && (
+                <div
+                  className="text-pine/40 text-sm italic author-initial"
+                  dangerouslySetInnerHTML={{ __html: author.signature }}
+                />
+              )}
+            </div>
           </div>
-        </div>
+        </article>
       </div>
-    </div>
+    </section>
   );
 }

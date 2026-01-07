@@ -1,133 +1,142 @@
-import { getAllPoems } from '@/lib/poems';
+import { getAllPoems, getHomepage } from '@/lib/api';
 import Link from 'next/link';
 
+export const dynamic = 'force-static';
+
 export const metadata = {
-  title: 'The Tactile Verse - Vaishnavi',
-  description: 'Nature distilled into words. An unbleached, minimalist collection of tactile poetry.',
+  title: 'The Tactile Verse | Poems by Vaishnavi',
+  description: 'Nature distilled into words. A compact, tactile reading room for poems shaped by nature, memory, and slow observation.',
 };
 
-interface HomepageHeader {
-  title: string;
-  subtitle: string;
-}
-
-async function getHomepageHeader(): Promise<HomepageHeader> {
-  // Return default values directly for now (can be made dynamic with database later)
-  return {
-    title: 'The Tactile Verse',
-    subtitle: 'Nature distilled into words. An unbleached, minimalist collection of tactile poetry exploring the spaces between thought and feeling.'
-  };
-}
-
-export default async function Home() {
+export default function HomePage() {
+  const homepage = getHomepage();
   const poems = getAllPoems();
-  const latest = poems[0];
-  const recentPoems = poems.slice(0, 3);
-  const header = await getHomepageHeader();
+  const featured = poems[0];
+  const recent = poems.slice(0, 4);
 
   return (
-    <main className="min-h-screen bg-[#FDFBF7]">
-      <style>{`
-        .polaroid-card { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease; }
-        .polaroid-card:hover { transform: scale(1.02) translateY(-8px) rotate(1deg); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); z-index: 10; }
-        .polaroid-card:hover .polaroid-img { transform: scale(1.05); }
-        .polaroid-img { transition: transform 0.6s ease; }
-        .kinetic-text span { display: inline-block; opacity: 0; transform: translateY(20px); animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-      `}</style>
-
+    <section className="min-h-screen">
       {/* Hero Section */}
-      <header className="relative px-4 sm:px-10 py-16 sm:py-24 flex flex-col items-center justify-center text-center">
-        <div className="max-w-4xl mx-auto space-y-6">
-          <div className="mb-4 inline-flex items-center justify-center size-12 rounded-full bg-orange-600/10 text-orange-600">
-            <span className="text-2xl">✦</span>
+      <header className="container-prose py-20 md:py-32 text-center">
+        <div className="max-w-2xl mx-auto">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-burnt/10 text-burnt mb-6">
+            <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
           </div>
-          <h1 className="kinetic-text text-5xl sm:text-7xl font-serif font-extrabold tracking-tight text-slate-900 leading-[1.1]">
-            {header.title ? header.title.split(' ').map((word, idx) => (
-              <span key={idx} style={{ animationDelay: `${0.1 + idx * 0.1}s` }}>
-                {word}{' '}
-              </span>
-            )) : (
-              <>
-                <span style={{ animationDelay: '0.1s' }}>The</span>{' '}
-                <span style={{ animationDelay: '0.2s' }}>Tactile</span>{' '}
-                <span className="text-orange-600" style={{ animationDelay: '0.3s' }}>Verse</span>
-              </>
-            )}
+
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-pine font-bold tracking-tight leading-[1.1] mb-6">
+            {homepage?.heroTitle || 'The Tactile Verse'}
           </h1>
-          <div className="max-w-2xl mx-auto mt-6">
-            <p className="text-lg sm:text-xl font-serif leading-relaxed text-slate-700/80 max-w-[65ch] mx-auto">
-              {header.subtitle}
-            </p>
+
+          <p className="font-serif text-lg md:text-xl text-pine/70 leading-relaxed max-w-xl mx-auto mb-8">
+            {homepage?.heroSubtitle || 'Nature distilled into words. An unbleached, minimalist collection of tactile poetry.'}
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link href="/poems" className="btn-primary">
+              Explore Collection
+            </Link>
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-pine/70 hover:text-burnt transition-colors text-sm font-medium"
+            >
+              About the Poet
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
           </div>
         </div>
       </header>
 
-      {/* Featured Section */}
-      {latest && (
-        <section className="px-4 sm:px-10 py-12 flex justify-center">
-          <div className="w-full max-w-[1024px] bg-white p-3 sm:p-4 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-[#EBE8E1]">
-            <Link href={`/poems/${latest.slug}`} className="polaroid-card flex flex-col items-stretch justify-start rounded-lg bg-orange-50 overflow-hidden md:flex-row md:items-center relative group cursor-pointer">
-              <div className="w-full md:w-1/2 aspect-[4/3] md:aspect-square overflow-hidden">
-                <div className="polaroid-img w-full h-full bg-center bg-no-repeat bg-cover" style={{
-                  backgroundImage: latest.featuredImage ? `url(${latest.featuredImage})` : 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuA8nBsftp80EoX0_9LXiv0dw7EQv6mUW7P8_PhzK-82pb8ThVQHIyi0LAFvQnpZ_zenst0RyS9GROx052NzEzh0-OO4Tip3IGnhJDBNc1_k92vABEbvSGjyiME3uE0o0WEAbASkFPafaGUuN8fJZ7JcZ4sMXTEXTKqgl6oaMpr8CxlQ-CjwKeI4Sav0Juf-kqZ8BqzfsUkHRpI6Z-sm0ilBjoc4s5dYo2BKcidIV-ruq9zmu--Z2QhiXHJT56j8G0UA8WbYPdLrzo7t")'
-                }} />
-              </div>
-              <div className="flex w-full md:w-1/2 flex-col items-start justify-center gap-4 p-8 md:p-12 bg-orange-50 relative">
-                <span className="absolute top-6 right-6 text-orange-600/40 text-4xl">✧</span>
-                <div className="space-y-2">
-                  <span className="text-xs font-bold tracking-widest text-orange-600 uppercase">Featured Poem</span>
-                  <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 leading-tight">{latest.title}</h2>
+      {/* Featured Poem */}
+      {featured && (
+        <section className="container-prose pb-16">
+          <Link href={`/poems/${featured.slug}`} className="group block">
+            <div className="glass-card overflow-hidden hover:border-burnt/30 transition-all duration-300">
+              <div className="flex flex-col lg:flex-row">
+                {/* Image Side */}
+                {featured.featuredImage && (
+                  <div className="lg:w-1/2 aspect-[4/3] lg:aspect-auto relative overflow-hidden">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700"
+                      style={{ backgroundImage: `url(${featured.featuredImage})` }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-paper/80 lg:to-paper" />
+                  </div>
+                )}
+
+                {/* Content Side */}
+                <div className="lg:w-1/2 p-8 md:p-10 lg:p-12 flex flex-col justify-center">
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-burnt mb-3">Featured Poem</p>
+                  <h2 className="font-serif text-3xl md:text-4xl text-pine font-semibold mb-4 group-hover:text-burnt transition-colors">
+                    {featured.title}
+                  </h2>
+                  {featured.excerpt && (
+                    <p className="font-serif text-pine/60 italic leading-relaxed mb-6 line-clamp-3">
+                      "{featured.excerpt}"
+                    </p>
+                  )}
+                  <div className="inline-flex items-center gap-2 text-sm font-medium text-burnt group-hover:gap-3 transition-all">
+                    Read Full Poem
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
                 </div>
-                <div className="relative pl-4 border-l-2 border-orange-600/30 my-2">
-                  <p className="font-serif text-lg leading-[1.8] text-slate-800 italic">
-                    {latest.excerpt || 'A featured poem from the collection...'}
-                  </p>
-                </div>
-                <button className="mt-4 flex items-center gap-2 text-sm font-bold text-orange-600 group-hover:gap-3 transition-all">
-                  Read Full Poem →
-                </button>
               </div>
-            </Link>
+            </div>
+          </Link>
+        </section>
+      )}
+
+      {/* Quote Section */}
+      {homepage?.featuredQuote && (
+        <section className="container-prose pb-16">
+          <div className="glass-card p-8 md:p-12 text-center bg-pine/[0.03]">
+            <blockquote className="font-serif text-2xl md:text-3xl text-pine italic leading-relaxed max-w-2xl mx-auto">
+              "{homepage.featuredQuote}"
+            </blockquote>
           </div>
         </section>
       )}
 
-      {/* Grid Collection */}
-      <section className="px-4 sm:px-10 py-12 flex justify-center bg-white/50">
-        <div className="w-full max-w-[1024px]">
-          <div className="flex items-center justify-between mb-8 px-2">
-            <h3 className="font-serif text-2xl font-bold text-slate-900">Recent Collections</h3>
-            <Link className="text-sm font-medium text-slate-700/60 hover:text-orange-600 transition-colors" href="/poems">View All</Link>
+      {/* Recent Poems */}
+      {recent.length > 1 && (
+        <section className="container-prose pb-24">
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="font-serif text-2xl text-pine font-semibold">Recent Works</h3>
+            <Link href="/poems" className="text-sm text-pine/50 hover:text-burnt transition-colors">
+              View All →
+            </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {recentPoems.map((poem, idx) => (
+
+          <div className="grid sm:grid-cols-2 gap-6">
+            {recent.slice(1).map((poem, idx) => (
               <Link
                 key={poem.slug}
                 href={`/poems/${poem.slug}`}
-                className="polaroid-card group flex flex-col gap-4 bg-white p-4 pb-6 rounded-sm shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#EBE8E1] transition-all duration-300"
-                style={{ 
-                  rotate: idx === 0 ? '-1deg' : idx === 1 ? '1deg' : '-0.5deg',
-                  transform: idx === 1 ? 'translateY(2rem)' : undefined 
-                }}
+                className="group glass-card p-6 hover:border-burnt/30 transition-all duration-300"
+                style={{ animationDelay: `${idx * 0.1}s` }}
               >
-                <div className="aspect-[4/5] w-full overflow-hidden rounded-sm bg-[#F0ECE4]">
-                  <div className="polaroid-img w-full h-full bg-cover bg-center" style={{
-                    backgroundImage: poem.featuredImage ? `url(${poem.featuredImage})` : undefined
-                  }} />
-                </div>
-                <div className="px-2">
-                  <h4 className="font-serif text-xl font-bold text-slate-900 mb-1">{poem.title}</h4>
-                  <p className="text-xs font-medium text-orange-600 mb-3">By Vaishnavi</p>
-                  <p className="font-serif text-sm leading-relaxed text-slate-700/70 line-clamp-3">
-                    {poem.excerpt || 'A beautiful piece from the collection...'}
-                  </p>
-                </div>
+                <p className="text-[10px] uppercase tracking-[0.25em] text-burnt/70 mb-2">
+                  {poem.category || 'Poem'}
+                </p>
+                <h4 className="font-serif text-xl text-pine group-hover:text-burnt transition-colors mb-2">
+                  {poem.title}
+                </h4>
+                <p className="text-xs text-pine/40 uppercase tracking-[0.2em]">
+                  {new Date(poem.date).toLocaleDateString('en-US', {
+                    month: 'short',
+                    year: 'numeric',
+                  })}
+                </p>
               </Link>
             ))}
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+      )}
+    </section>
   );
 }

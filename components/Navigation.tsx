@@ -4,9 +4,18 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
+type NavItem = { label: string; href: string; enabled: boolean };
+
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [logoText, setLogoText] = useState('Vaishnavi');
+  const [navItems, setNavItems] = useState<NavItem[]>([
+    { label: 'Home', href: '/', enabled: true },
+    { label: 'Poems', href: '/poems', enabled: true },
+    { label: 'About', href: '/about', enabled: true },
+    { label: 'Admin', href: '/admin', enabled: true },
+  ]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +23,23 @@ export default function Navigation() {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    // Fetch site settings to populate navigation dynamically
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch('/api/admin/settings', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.headerLogoText) setLogoText(data.headerLogoText);
+          if (Array.isArray(data.navItems)) setNavItems(data.navItems);
+        }
+      } catch (e) {
+        // Non-blocking: keep defaults on failure
+      }
+    };
+    fetchSettings();
   }, []);
 
   return (
@@ -37,16 +63,15 @@ export default function Navigation() {
               whileHover={{ scale: 1.05 }}
               className="font-serif text-xl sm:text-2xl text-earth tracking-wide"
             >
-              Vaishnavi
+              {logoText}
             </motion.div>
           </Link>
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-6 lg:gap-8">
-            <NavLink href="/">Home</NavLink>
-            <NavLink href="/poems">Poems</NavLink>
-            <NavLink href="/about">About</NavLink>
-            <NavLink href="/admin">Admin</NavLink>
+            {navItems.filter(i => i.enabled).map(item => (
+              <NavLink key={item.href} href={item.href}>{item.label}</NavLink>
+            ))}
           </div>
 
           {/* Mobile menu button */}
@@ -72,10 +97,11 @@ export default function Navigation() {
             className="md:hidden py-4 border-t border-clay/20"
           >
             <div className="flex flex-col gap-4">
-              <MobileNavLink href="/" onClick={() => setMobileMenuOpen(false)}>Home</MobileNavLink>
-              <MobileNavLink href="/poems" onClick={() => setMobileMenuOpen(false)}>Poems</MobileNavLink>
-              <MobileNavLink href="/about" onClick={() => setMobileMenuOpen(false)}>About</MobileNavLink>
-              <MobileNavLink href="/admin" onClick={() => setMobileMenuOpen(false)}>Admin</MobileNavLink>
+              {navItems.filter(i => i.enabled).map(item => (
+                <MobileNavLink key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)}>
+                  {item.label}
+                </MobileNavLink>
+              ))}
             </div>
           </motion.div>
         )}

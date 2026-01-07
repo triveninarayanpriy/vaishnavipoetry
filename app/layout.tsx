@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import PageTransition from "@/components/PageTransition";
+import Footer from "@/components/Footer";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -58,6 +59,7 @@ export default function RootLayout({
             {children}
           </main>
         </PageTransition>
+        <Footer />
       </body>
     </html>
   );

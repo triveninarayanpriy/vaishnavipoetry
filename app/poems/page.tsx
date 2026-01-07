@@ -4,80 +4,119 @@ import Link from 'next/link';
 export const dynamic = 'force-static';
 
 export const metadata = {
-  title: 'Poetry Collection | The Tactile Verse',
-  description: 'A curated collection of poems exploring nature, memory, and slow observation.',
+  title: 'Poems | Vaishnavi',
+  description: 'Explore the collection by category.',
 };
 
-export default function PoemsPage() {
+type SearchParams = {
+  category?: string | string[];
+};
+
+function getUniqueCategories(poems: ReturnType<typeof getAllPoems>): string[] {
+  const categories = poems
+    .map(poem => poem.category)
+    .filter((cat): cat is string => Boolean(cat));
+  return Array.from(new Set(categories));
+}
+
+export default function PoemsPage({ searchParams }: { searchParams?: SearchParams }) {
   const poems = getAllPoems();
+  const categories = getUniqueCategories(poems);
+
+  const rawCategory = searchParams?.category;
+  const activeCategory = Array.isArray(rawCategory) ? rawCategory[0] : rawCategory;
+
+  const filteredPoems = activeCategory
+    ? poems.filter(poem => (poem.category || '').toLowerCase() === activeCategory.toLowerCase())
+    : poems;
 
   return (
-    <section className="container-prose py-16 md:py-24">
-      {/* Header */}
-      <header className="mb-12 text-center">
-        <p className="text-xs uppercase tracking-[0.3em] text-burnt mb-3">Collection</p>
-        <h1 className="font-serif text-4xl md:text-5xl text-pine font-semibold mb-4">
-          Poetry Archive
-        </h1>
-        <p className="font-sans text-pine/60 max-w-lg mx-auto leading-relaxed">
-          Words shaped by nature, memory, and the quiet spaces between thought and feeling.
-        </p>
-      </header>
+    <section className="min-h-screen bg-paper/60">
+      <div className="container-prose max-w-5xl py-16 md:py-24 relative z-10">
+        {/* Hero */}
+        <header className="text-center mb-14 space-y-4">
+          <h1 className="font-serif text-5xl md:text-6xl text-pine font-semibold tracking-tight">Poems</h1>
+          <p className="font-serif text-lg md:text-xl text-pine/70 italic max-w-2xl mx-auto">
+            Explore the collection by category.
+          </p>
+        </header>
 
-      {/* Poems Grid */}
-      <div className="grid gap-6 md:gap-8">
-        {poems.map((poem, idx) => (
+        {/* Category Filters */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
           <Link
-            key={poem.slug}
-            href={`/poems/${poem.slug}`}
-            className="group glass-card p-6 md:p-8 flex flex-col md:flex-row md:items-center gap-4 md:gap-8 hover:border-burnt/30 transition-all duration-300"
-            style={{ animationDelay: `${idx * 0.08}s` }}
+            href="/poems"
+            className={`px-6 py-2 rounded-full text-sm font-medium transition-all border ${
+              !activeCategory
+                ? 'bg-burnt text-paper shadow-md'
+                : 'bg-paper text-pine/70 border-pine/10 hover:border-burnt/40 hover:text-burnt'
+            }`}
           >
-            {/* Left: Index */}
-            <div className="hidden md:flex items-center justify-center w-12 h-12 rounded-xl bg-pine/5 text-pine/40 font-serif text-lg shrink-0">
-              {String(idx + 1).padStart(2, '0')}
-            </div>
+            All
+          </Link>
+          {categories.map(category => (
+            <Link
+              key={category}
+              href={`/poems?category=${encodeURIComponent(category)}`}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all border ${
+                activeCategory?.toLowerCase() === category.toLowerCase()
+                  ? 'bg-burnt text-paper shadow-md'
+                  : 'bg-paper text-pine/70 border-pine/10 hover:border-burnt/40 hover:text-burnt'
+              }`}
+            >
+              {category}
+            </Link>
+          ))}
+        </div>
 
-            {/* Center: Content */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-[10px] uppercase tracking-[0.25em] text-burnt/70 font-medium">
-                  {poem.category || 'Poem'}
-                </span>
-                <span className="h-px w-6 bg-pine/15" />
-                <span className="text-[10px] uppercase tracking-[0.2em] text-pine/40">
-                  {new Date(poem.date).toLocaleDateString('en-US', {
-                    month: 'short',
-                    year: 'numeric',
-                  })}
-                </span>
+        {/* Poems List */}
+        <div className="space-y-6">
+          {filteredPoems.map((poem, idx) => (
+            <Link
+              key={poem.slug}
+              href={`/poems/${poem.slug}`}
+              className="group relative bg-white/90 rounded-xl p-8 shadow-[0_4px_20px_-2px_rgba(45,58,47,0.05)] hover:shadow-[0_10px_25px_-5px_rgba(45,58,47,0.1)] transition-all duration-300 border border-transparent hover:border-pine/10 overflow-hidden"
+              style={{ animationDelay: `${idx * 0.08}s` }}
+            >
+              <div className="flex justify-between items-start mb-4 gap-3">
+                <h2 className="font-serif text-2xl sm:text-3xl text-pine group-hover:text-burnt transition-colors">
+                  {poem.title}
+                </h2>
+                {poem.category && (
+                  <span className="inline-block bg-pine/5 text-pine/70 text-xs px-3 py-1 rounded-full uppercase tracking-wide font-semibold">
+                    {poem.category}
+                  </span>
+                )}
               </div>
-              <h2 className="font-serif text-xl md:text-2xl text-pine group-hover:text-burnt transition-colors leading-tight mb-2">
-                {poem.title}
-              </h2>
+
               {poem.excerpt && (
-                <p className="text-sm text-pine/60 leading-relaxed line-clamp-2">
+                <p className="font-serif text-pine/70 text-base leading-relaxed mb-6 line-clamp-2">
                   {poem.excerpt}
                 </p>
               )}
-            </div>
 
-            {/* Right: Arrow */}
-            <div className="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-burnt/10 text-burnt group-hover:bg-burnt group-hover:text-paper transition-all shrink-0">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      {/* Empty State */}
-      {poems.length === 0 && (
-        <div className="glass-card p-12 text-center">
-          <p className="font-serif text-lg text-pine/60">No poems yet. Check back soon.</p>
+              <div className="flex items-center text-xs font-bold tracking-[0.2em] text-burnt uppercase border-t border-pine/10 pt-4">
+                <span>
+                  {new Date(poem.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                </span>
+                <span className="mx-2 text-pine/30">•</span>
+                <span className="flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  Read Poem
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
-      )}
+
+        {/* Empty State */}
+        {filteredPoems.length === 0 && (
+          <div className="glass-card p-12 text-center">
+            <p className="font-serif text-lg text-pine/60">No poems in this category yet.</p>
+          </div>
+        )}
+      </div>
     </section>
   );
 }

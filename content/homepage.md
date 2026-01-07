@@ -1,5 +1,5 @@
 ---
-heroTitle: KUSUM
+heroTitle: KUSUMm
 heroSubtitle: Where words meet the natural world.
 featuredQuote: |-
   The river carries ancient songs

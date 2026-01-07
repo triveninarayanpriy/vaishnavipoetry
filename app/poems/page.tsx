@@ -1,7 +1,7 @@
 import { getAllPoems } from '@/lib/api';
 import Link from 'next/link';
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Poems | Vaishnavi',
@@ -16,7 +16,7 @@ function getUniqueCategories(poems: ReturnType<typeof getAllPoems>): string[] {
   const categories = poems
     .map(poem => poem.category)
     .filter((cat): cat is string => Boolean(cat));
-  return Array.from(new Set(categories));
+  return Array.from(new Set(categories)).sort((a, b) => a.localeCompare(b));
 }
 
 export default function PoemsPage({ searchParams }: { searchParams?: SearchParams }) {
@@ -40,7 +40,7 @@ export default function PoemsPage({ searchParams }: { searchParams?: SearchParam
         </header>
 
         {/* Category Filters */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
+        <div className="flex flex-wrap justify-start gap-3 mb-12">
           <Link
             href="/poems"
             className={`px-6 py-2 rounded-full text-sm font-medium transition-all border ${

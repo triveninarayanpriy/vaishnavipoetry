@@ -1,8 +1,8 @@
 ---
 heroTitle: triveni narayan priy
-heroSubtitle: hi hi hi.
+heroSubtitle: hi hi hi. ha ha
 featuredQuote: jai shree ram
-ctaText: Kya chahiye?
+ctaText: chahiye?
 featuredSlug: ''
 ---
 

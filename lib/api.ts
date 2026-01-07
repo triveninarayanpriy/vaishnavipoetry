@@ -21,6 +21,7 @@ export interface About {
   writerPhoto: string;
   writerName: string;
   tagline: string;
+  signature?: string;
   content: string;
 }
 
@@ -98,6 +99,7 @@ export function getAbout(): About {
     writerPhoto: data.writerPhoto || '/images/placeholder-photo.jpg',
     writerName: data.writerName || 'Vaishnavi',
     tagline: data.tagline || 'Poet & Observer',
+    signature: data.signature,
     content: content.trim()
   };
 }

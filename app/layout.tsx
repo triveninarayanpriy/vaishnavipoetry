@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Playfair_Display, Merriweather, Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import PageTransition from "@/components/PageTransition";
 import Footer from "@/components/Footer";
+import { getChromeSettings } from "@/lib/site";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const merriweather = Merriweather({
+  variable: "--font-merriweather",
+  subsets: ["latin"],
+  weight: ["300", "400", "700", "900"],
   display: "swap",
 });
 
@@ -18,18 +26,18 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Vaishnavi Poetry | A Collection of Nature & Wonder",
-  description: "Explore poetry celebrating nature, memory, and the human condition through thoughtful verse and observation.",
-  keywords: ["poetry", "nature poetry", "original poetry", "literature", "creative writing"],
+  title: "The Tactile Verse | Poems by Vaishnavi",
+  description: "A compact, tactile reading room for poems shaped by nature, memory, and slow observation.",
+  keywords: ["poetry", "nature", "verse", "tactile", "literature"],
   authors: [{ name: "Vaishnavi" }],
   creator: "Vaishnavi",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://vaishnavipoetry.me",
-    siteName: "Vaishnavi Poetry",
-    title: "Vaishnavi Poetry | A Collection of Nature & Wonder",
-    description: "Explore poetry celebrating nature, memory, and the human condition.",
+    siteName: "The Tactile Verse",
+    title: "The Tactile Verse | Poems by Vaishnavi",
+    description: "A compact, tactile reading room for poems shaped by nature, memory, and slow observation.",
   },
   robots: {
     index: true,
@@ -48,18 +56,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const chrome = getChromeSettings();
+
   return (
     <html lang="en">
       <body
-        className={`${playfair.variable} ${inter.variable} antialiased`}
+        className={`${playfair.variable} ${merriweather.variable} ${inter.variable} antialiased bg-paper text-ink`}
       >
-        <Navigation />
+        <div className="paper-grid" aria-hidden />
+        <Navigation logoText={chrome.logoText} navItems={chrome.nav} />
         <PageTransition>
-          <main className="pt-16">
-            {children}
-          </main>
+          <main className="pt-10 pb-16">{children}</main>
         </PageTransition>
-        <Footer />
+        <Footer footerText={chrome.footerText} footerCopyright={chrome.footerCopyright} />
       </body>
     </html>
   );

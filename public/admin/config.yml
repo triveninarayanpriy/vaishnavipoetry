@@ -2,17 +2,53 @@ backend:
   name: github
   repo: triveninarayanpriy/vaishnavipoetry
   branch: main
-  base_url: https://www.vaishnavipoetry.me
-  auth_endpoint: api/auth
-
-# Only allow specific GitHub users
 publish_mode: editorial_workflow
 site_url: https://www.vaishnavipoetry.me
-
 media_folder: "public/images"
 public_folder: "/images"
 
 collections:
+  # Singleton files for site chrome and pages
+  - name: "files"
+    label: "Site Settings"
+    files:
+      - name: "header_footer"
+        label: "Header & Footer"
+        file: "content/header-footer.yml"
+        fields:
+          - { label: "Site Name", name: "siteName", widget: "string", default: "The Tactile Verse" }
+          - { label: "Logo Text", name: "logoText", widget: "string", default: "Tactile Verse" }
+          - label: "Navigation Links"
+            name: "nav"
+            widget: "list"
+            allow_add: true
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Href", name: "href", widget: "string", default: "/" }
+              - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+          - { label: "Footer Text", name: "footerText", widget: "text", default: "Stillness beneath every line." }
+          - { label: "Footer Copyright", name: "footerCopyright", widget: "string", default: "© 2026 The Tactile Verse" }
+      - name: "homepage"
+        label: "Homepage"
+        file: "content/homepage.md"
+        fields:
+          - { label: "Hero Title", name: "heroTitle", widget: "string", default: "The Tactile Verse" }
+          - { label: "Hero Subtitle", name: "heroSubtitle", widget: "text", default: "Nature distilled into words." }
+          - { label: "Featured Poem Quote", name: "featuredQuote", widget: "text" }
+          - { label: "CTA Button Text", name: "ctaText", widget: "string", default: "Read the Collection" }
+          - { label: "Featured Poem Slug", name: "featuredSlug", widget: "string", required: false, hint: "Slug of poem to feature" }
+      - name: "about"
+        label: "About Page"
+        file: "content/about.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string", default: "About" }
+          - { label: "Writer Name", name: "writerName", widget: "string" }
+          - { label: "Tagline", name: "tagline", widget: "string" }
+          - { label: "Writer Photo", name: "writerPhoto", widget: "image" }
+          - { label: "Signature SVG", name: "signature", widget: "text", required: false, hint: "Paste inline SVG" }
+          - { label: "Body", name: "body", widget: "markdown" }
+
+  # Standard collection for poems
   - name: "poems"
     label: "Poems"
     folder: "content/poems"
@@ -22,70 +58,9 @@ collections:
       preview: true
     fields:
       - { label: "Title", name: "title", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string", hint: "Lowercase with hyphens" }
       - { label: "Publish Date", name: "date", widget: "datetime" }
       - { label: "Category", name: "category", widget: "string", default: "Poetry" }
-      - { label: "Excerpt", name: "excerpt", widget: "text", hint: "First line or short excerpt for preview" }
-      - { 
-          label: "Theme", 
-          name: "theme", 
-          widget: "select", 
-          options: ["Light", "Dark", "Vintage"],
-          default: "Light",
-          hint: "Visual theme for the poem page"
-        }
-      - { 
-          label: "Featured Image", 
-          name: "featuredImage", 
-          widget: "image", 
-          required: false,
-          hint: "Cover photo for the poem"
-        }
-      - { 
-          label: "Background Style", 
-          name: "background", 
-          widget: "string",
-          required: false,
-          default: "bg-gradient-to-br from-cream via-parchment to-sage/10",
-          hint: "Tailwind CSS gradient classes"
-        }
-      - { 
-          label: "Body", 
-          name: "body", 
-          widget: "markdown",
-          hint: "Full poem content - preserve line breaks and stanzas"
-        }
-
-  - name: "about"
-    label: "About Page"
-    files:
-      - name: "about"
-        label: "About"
-        file: "content/about.md"
-        fields:
-          - { label: "Title", name: "title", widget: "string", default: "About" }
-          - { 
-              label: "Writer Photo", 
-              name: "writerPhoto", 
-              widget: "image",
-              hint: "Circular profile photo of the writer"
-            }
-          - { label: "Writer Name", name: "writerName", widget: "string" }
-          - { label: "Tagline", name: "tagline", widget: "string", hint: "Short subtitle (e.g., 'Poet & Observer')" }
-          - { 
-              label: "Bio", 
-              name: "body", 
-              widget: "markdown",
-              hint: "Full biography and story"
-            }
-
-  - name: "homepage"
-    label: "Homepage"
-    files:
-      - name: "homepage"
-        label: "Homepage"
-        file: "content/homepage.md"
-        fields:
-          - { label: "Hero Title", name: "heroTitle", widget: "string", default: "Vaishnavi" }
-          - { label: "Hero Subtitle", name: "heroSubtitle", widget: "string", hint: "Short greeting or tagline" }
-          - { label: "Featured Poem Quote", name: "featuredQuote", widget: "text", hint: "Multi-line poem excerpt to display on home" }
-          - { label: "CTA Button Text", name: "ctaText", widget: "string", default: "Explore the Collection" }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
+      - { label: "Cover Image", name: "featuredImage", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }

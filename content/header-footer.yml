@@ -1,0 +1,14 @@
+siteName: "The Tactile Verse"
+logoText: "Tactile Verse"
+nav:
+  - label: "Home"
+    href: "/"
+    enabled: true
+  - label: "Poems"
+    href: "/poems"
+    enabled: true
+  - label: "About"
+    href: "/about"
+    enabled: true
+footerText: "Stillness beneath every line."
+footerCopyright: "© 2026 The Tactile Verse"

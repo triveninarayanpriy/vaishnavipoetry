@@ -1,6 +1,23 @@
 {
   "siteName": "Vaishnavi Poetry",
   "siteUrl": "https://www.vaishnavipoetry.me",
+  "siteDescription": "Explore poetry celebrating nature, memory, and the human condition through thoughtful verse and observation.",
+  "siteKeywords": "poetry, nature poetry, original poetry, literature, creative writing",
+  "authorName": "Vaishnavi",
+  "headerLogo": "",
+  "headerLogoText": "Vaishnavi",
+  "showAdminLink": true,
+  "footerText": "A quiet space for poetry and reflection.",
+  "footerCopyright": "© 2026 Vaishnavi Poetry. All rights reserved.",
+  "socialTwitter": "",
+  "socialInstagram": "",
+  "socialEmail": "",
+  "navItems": [
+    { "label": "Home", "href": "/", "enabled": true },
+    { "label": "Poems", "href": "/poems", "enabled": true },
+    { "label": "About", "href": "/about", "enabled": true },
+    { "label": "Admin", "href": "/admin", "enabled": true }
+  ],
   "about": {
     "title": "About",
     "writerName": "Vaishnavi",

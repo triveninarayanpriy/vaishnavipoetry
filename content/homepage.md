@@ -7,5 +7,6 @@ featuredQuote: |-
   It winds through valleys, deep and wide,
   A liquid path, a flowing guide.
 ctaText: Explore the Collection
+authorByline: By Vaishnavi
 ---
 

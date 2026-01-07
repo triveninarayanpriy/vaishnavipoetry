@@ -1,14 +1,17 @@
-siteName: "The Tactile Verse"
-logoText: "Tactile Verse"
+siteName: vaishnavi
+logoText: vaishnavi
 nav:
-  - label: "Home"
-    href: "/"
+  - label: Home
+    href: /
     enabled: true
-  - label: "Poems"
-    href: "/poems"
+  - label: Poems
+    href: /poems
     enabled: true
-  - label: "About"
-    href: "/about"
+  - label: About
+    href: /about
     enabled: true
-footerText: "Stillness beneath every line."
-footerCopyright: "© 2026 The Tactile Verse"
+  - label: admin
+    href: /admin
+    enabled: true
+footerText: Triveni narayan piy
+footerCopyright: © 2026 vaishnavi c r

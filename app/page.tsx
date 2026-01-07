@@ -4,70 +4,89 @@ import Link from 'next/link';
 export const dynamic = 'force-static';
 
 export const metadata = {
-  title: 'The Tactile Verse | Poems by Vaishnavi',
-  description: 'Nature distilled into words. A compact, tactile reading room for poems shaped by nature, memory, and slow observation.',
+  title: 'Vaishnavi | Selected Works',
+  description: 'Recent additions to the collection.',
 };
+
+function formatDate(value: string) {
+  return new Date(value).toLocaleDateString('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+  });
+}
 
 export default function HomePage() {
   const homepage = getHomepage();
   const poems = getAllPoems();
-  const recent = poems.slice(0, 6);
+  const displayed = poems.slice(0, 12);
+
+  const title = homepage?.heroTitle?.trim() || 'Selected Works';
+  const subtitle = homepage?.heroSubtitle?.trim() || 'Recent additions to the collection';
+  const ctaText = homepage?.ctaText?.trim() || 'Next Page';
 
   return (
-    <section className="min-h-screen">
-      {/* Hero Section */}
-      <header className="container-prose py-24 md:py-32 text-center">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="font-serif text-6xl md:text-7xl lg:text-8xl text-soil font-bold tracking-tight leading-[1.05] mb-6">
-            {homepage?.heroTitle || "Where Ink Meets the Earth's Whisper"}
+    <section className="min-h-screen bg-paper/70">
+      <div className="container-prose max-w-4xl py-12 md:py-20 flex flex-col gap-12 md:gap-16">
+        {/* Header */}
+        <header className="border-b border-pine/10 pb-6 text-center md:text-left">
+          <h1 className="font-serif text-4xl md:text-5xl text-pine font-semibold tracking-tight">
+            {title}
           </h1>
-
-          <p className="font-serif text-xl md:text-2xl text-soil/70 leading-relaxed max-w-2xl mx-auto mb-12">
-            {homepage?.heroSubtitle || 'Tactile verses, born from nature, crafted for the soul.'}
+          <p className="font-sans text-sm text-pine/60 mt-2 tracking-wide">
+            {subtitle}
           </p>
+        </header>
 
-          <Link href="/poems" className="inline-block px-8 py-3 bg-burnt hover:bg-burnt/90 text-cream rounded-lg font-medium transition-colors">
-            {homepage?.ctaText || 'Read Poems'}
+        {/* Selected Works */}
+        <div className="space-y-6 md:space-y-8">
+          {displayed.map((poem, idx) => (
+            <Link
+              key={poem.slug}
+              href={`/poems/${poem.slug}`}
+              className="group relative block bg-white/80 rounded-lg p-6 md:p-8 shadow-[0_4px_20px_-2px_rgba(45,58,47,0.05)] hover:shadow-[0_10px_25px_-5px_rgba(45,58,47,0.12)] border border-pine/10 hover:border-burnt/30 transition-all duration-300"
+              style={{ animationDelay: `${idx * 0.05}s` }}
+            >
+              <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 mb-3">
+                <h2 className="font-serif text-2xl md:text-3xl text-pine group-hover:text-burnt transition-colors">
+                  {poem.title}
+                </h2>
+                <time className="text-[10px] font-bold tracking-[0.25em] text-pine/50 uppercase">
+                  {formatDate(poem.date)}
+                </time>
+              </div>
+
+              {poem.excerpt && (
+                <p className="font-serif text-lg text-pine/70 italic leading-relaxed">
+                  "{poem.excerpt}"
+                </p>
+              )}
+            </Link>
+          ))}
+
+          {displayed.length === 0 && (
+            <div className="glass-card p-10 text-center">
+              <p className="font-serif text-lg text-pine/60">No poems yet. Add one from the Admin page.</p>
+            </div>
+          )}
+        </div>
+
+        {/* Next / More */}
+        <div className="flex justify-center pt-4">
+          <Link
+            href="/poems"
+            className="group relative px-8 py-3 overflow-hidden rounded-md border border-burnt/40 hover:border-burnt text-pine hover:text-paper transition-all duration-300"
+          >
+            <span className="absolute inset-0 bg-burnt transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+            <span className="relative font-sans text-sm font-bold tracking-[0.25em] uppercase flex items-center gap-2">
+              {ctaText}
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
           </Link>
         </div>
-      </header>
-
-      {/* Recent Works Section */}
-      {recent.length > 0 && (
-        <section className="container-prose pb-20">
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="font-serif text-4xl md:text-5xl text-soil font-bold">
-              Recent Works
-            </h2>
-            <Link href="/poems" className="text-burnt hover:text-burnt/80 transition-colors font-medium flex items-center gap-2">
-              View All
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recent.map((poem) => (
-              <Link key={poem.slug} href={`/poems/${poem.slug}`} className="group block">
-                <div className="glass-card p-6 md:p-8 hover:border-burnt/30 transition-all duration-300 h-full flex flex-col">
-                  <h3 className="font-serif text-2xl text-soil font-semibold mb-3 group-hover:text-burnt transition-colors line-clamp-2">
-                    {poem.title}
-                  </h3>
-                  {poem.excerpt && (
-                    <p className="font-serif text-soil/60 text-base leading-relaxed mb-4 line-clamp-3 flex-grow">
-                      {poem.excerpt}
-                    </p>
-                  )}
-                  <time className="text-sm text-soil/50 uppercase tracking-wide font-medium">
-                    {new Date(poem.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }).toUpperCase()}
-                  </time>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
+      </div>
     </section>
   );
 }

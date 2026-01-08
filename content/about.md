@@ -1,15 +1,10 @@
 ---
 title: About
-writerName: Vaishnavi jiiiiiiiiittttttt
-tagline: Poet & Observer of Lifeeeeeee
-writerPhoto: /images/IMG_20260107_045815.jpg
-signature: Triveni jiiiiiiiiiii
-location: New Delhi, India
+writerName: Vaishnavi
+tagline: स्वाभाविक
+writerPhoto: /images/IMG_20251207_161442_292.jpg
+signature: ''
 quote: Poetry is not just written; it is felt like rough bark and cool water.
+location: New Delhi, India
 ---
-Welcome to my poetry —a quiet space where words meet the natural world, and observations transform into verse."We write to taste life twice, in the moment and in retrospect."
-— पता नहीं कौन  sayad triveniWelcome to my poetry —a quiet space where words meet the natural world, and observations transform into verse."We write to taste life twice, in the moment and in retrospect."
-— पता नहीं कौन  sayad triveniWelcome to my poetry —a quiet space where words meet the natural world, and observations transform into verse."We write to taste life twice, in the moment and in retrospect."
-— पता नहीं कौन  sayad triveniWelcome to my poetry —a quiet space where words meet the natural world, and observations transform into verse."We write to taste life twice, in the moment and in retrospect."
-— पता नहीं कौन  sayad triveniWelcome to my poetry —a quiet space where words meet the natural world, and observations transform into verse."We write to taste life twice, in the moment and in retrospect."
-— पता नहीं कौन  sayad triveni
+Welcome to my poetry —a quiet space where words meet the natural world.

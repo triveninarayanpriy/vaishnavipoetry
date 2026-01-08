@@ -1,20 +1,17 @@
 ---
-title: Echoes of Triveni ji🥺😍
+title: गुनगुनाहट
+slug: हां मैंने आज़ाद उड़ते पंछी को देखा है
 date: 2026-01-05T00:00:00.000Z
 category: Nature
 excerpt: In whispered winds the earth remembers...
+featuredImage: /images/IMG-20260108-WA0001.jpg
 theme: Vintage
-featuredImage: /images/poems/Copilot_20251210_113928-removebg-preview.png
 background: bg-gradient-to-br from-clay/20 via-sage/30 to-soil/20
 ---
-In whispered winds the earth remembers
-The touch of leaves now turned to ember,
-Each falling leaf a gentle note
-In autumn's melancholic quote.
+अनंत आकाश में तुमने देखे ,बादलों से बनी चित्रकारियां,
 
-त्रिवेणी जी आपने काफी मेहनत की है लगातार १६ घंटे लगा कर ये वेबसाइट पूरा किया
+ओस की बूंदों की पिचकारियां,
 
-Beneath the soil, the seeds await
-Their season's turn, their destined date,
-For nothing truly dies, you see—
-It merely waits in memory.- Triveni
+पर मैंने आज़ाद उड़ते पंछी को देखा है!
+
+INCOMPLETE....!
